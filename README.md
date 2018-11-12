@@ -3,6 +3,8 @@
 In this project, I explored using Jasmine to write a test suite for the Feed Reader program.
 I was able to make sure each of the expected outcomes actually occurred. This gave me confidence the code works as expected.
 
+https://www.diigo.com/outliner/fjsk23/Udacity-Feed-Reader-Testing-(project-%234)?key=i5xqspbzvg
+
 # Which tests did I run?
 
 1. Return the `allFeeds` variable to a passing state.
