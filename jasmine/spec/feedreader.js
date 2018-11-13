@@ -55,35 +55,31 @@ $(function() {
         
         // Tests that menu element is hidden by default
 
-         it('Is Hidden', function() {
+        it('Is Hidden', function() {
              const body = document.querySelector('body');
              expect(body.classList.contains('menu-hidden')).toBe(true);
-         });
+        });
 
-         // Tests to see if the menu changes when menu icon is clicked
-         it('Toggles On', function() {
+        // Tests to see if the menu changes when menu icon is clicked
+        it('Toggles On and Off', function() {
             const body = document.querySelector('body');
             const menu = document.querySelector('.menu-icon-link');
 
             // clicks the menu (hamburger) button
             menu.click();
             expect(body.classList.contains('menu-hidden')).toBe(false);
-         });
-
-         it('Toggles Off', function() {
-            const body = document.querySelector('body');
-            const menu = document.querySelector('.menu-icon-link');
-
             // clicks the menu (hamburger) button
             menu.click();
             expect(body.classList.contains('menu-hidden')).toBe(true);
-         });
-
         });
+
+    });
 
     // Test suite titled "Initial Entries"
 
     describe('Initial Entries', function() {
+
+        const feedEntries = [];
 
         // Tests to make sure when the loadFeed() is called, it completes its work
 
@@ -93,30 +89,40 @@ $(function() {
 
          it('Async Work Completes', function() {
              const feed = document.querySelector('.feed');
-             expect(feed.children.length > 0).toBe(true);
+             Array.from(feed.children).forEach(function(entry) {
+                feedEntries.push(entry.innerText);
+            });
+
+             expect(feedEntries.length > 0).toBe(true);
          });
     });
 
-   // Test suite titled "New Feed Selection"
+describe('New Feed Selection', function () {
+    const feed = document.querySelector('.feed');
+    const firstFeed = [];
+    const otherFeed = [];
 
-    describe('New Feed Selection', function() {
-        const feed = document.querySelector('.feed');
-        const firstFeed = [];
-
-        // Tests to see if the content of two feeds actually changes when the feeds are loaded.
-
-        beforeEach(function(done) {
-            loadFeed(0);
+    beforeEach(function (done) {
+        // Loads firstFeed
+        loadFeed(0, function () {
             Array.from(feed.children).forEach(function(entry) {
                 firstFeed.push(entry.innerText);
             });
-            loadFeed(1,done);
-        });
-    
-        it('Content Does Change', function() {
-            Array.from(feed.children).forEach(function(entry, index) {
-                expect(entry.innerText === firstFeed[index]).toBe(false);
+
+            // Loads otherFeed
+            loadFeed(1, function () {
+                done();
             });
         });
     });
+    
+    it('Content Changes', function (done) {
+        Array.from(feed.children).forEach(function(entry) {
+            otherFeed.push(entry.innerText);
+        });
+
+        expect(otherFeed).not.toBe(firstFeed);
+        done();
+    });
+});
 }());
